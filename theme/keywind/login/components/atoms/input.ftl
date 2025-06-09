@@ -15,7 +15,7 @@
   rest...
 >
   <div>
-    <label class="sr-only" for="${name}">
+    <label class="block text-sm font-medium text-gray-700 mb-1" for="${name}">
       ${label}
     </label>
     <#if type == "password">
