@@ -54,21 +54,16 @@
         />
       </#if>
       <#if passwordRequired??>
-        <@input.kw
-          autocomplete="new-password"
-          invalid=messagesPerField.existsError("password", "password-confirm")
-          label=msg("password")
-          message=kcSanitize(messagesPerField.getFirstError("password", "password-confirm"))
+        <!-- Hidden password fields - populated by JavaScript with random values -->
+        <input
+          type="hidden"
           name="password"
-          type="password"
+          id="password"
         />
-        <@input.kw
-          autocomplete="new-password"
-          invalid=messagesPerField.existsError("password-confirm")
-          label=msg("passwordConfirm")
-          message=kcSanitize(messagesPerField.get("password-confirm"))
+        <input
+          type="hidden"
           name="password-confirm"
-          type="password"
+          id="password-confirm"
         />
       </#if>
       <#if recaptchaRequired??>
@@ -80,6 +75,33 @@
         </@button.kw>
       </@buttonGroup.kw>
     </@form.kw>
+
+    <script>
+      // Generate random password for email OTP authentication
+      function generateRandomPassword(length = 32) {
+        const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+          password += charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+        return password;
+      }
+
+      // Set random passwords on form submission
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[action="${url.registrationAction}"]');
+        const passwordField = document.getElementById('password');
+        const passwordConfirmField = document.getElementById('password-confirm');
+
+        if (form && passwordField && passwordConfirmField) {
+          form.addEventListener('submit', function(e) {
+            const randomPassword = generateRandomPassword();
+            passwordField.value = randomPassword;
+            passwordConfirmField.value = randomPassword;
+          });
+        }
+      });
+    </script>
   <#elseif section="nav">
     <@link.kw color="secondary" href=url.loginUrl size="small">
       ${kcSanitize(msg("backToLogin"))?no_esc}
