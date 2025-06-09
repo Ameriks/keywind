@@ -13,22 +13,22 @@
   <#elseif section="form">
     <div class="text-center mb-6">
       <h1 class="text-xl font-semibold text-gray-900 mb-4">
-        ${msg("loginOtpTitle", "Enter Sign-In Code")}
+        Enter Sign-In Code
       </h1>
       <p class="text-sm text-gray-600">
-        ${msg("loginOtpMessage", "We've sent a code to your email. The code expires shortly, so please enter it soon.")}
+        We've sent a code to your email. The code expires shortly, so please enter it soon.
       </p>
     </div>
 
     <@form.kw action=url.loginAction method="post" id="otp_form">
       <div x-data="otpForm()" x-init="init()" class="space-y-6">
         <!-- Individual digit inputs -->
-        <div class="flex justify-center space-x-2" x-ref="otpInputContainer">
+        <div class="flex justify-center space-x-3" x-ref="otpInputContainer">
           <template x-for="(input, index) in length" :key="index">
             <input
               type="text"
               maxlength="1"
-              class="otpInput w-12 h-12 text-center text-2xl font-bold rounded-lg border-2 border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none transition-all duration-200 bg-white"
+              class="otpInput w-14 h-14 text-center text-2xl font-bold rounded-lg border-2 border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none transition-all duration-200 bg-white shadow-sm"
               x-on:input="handleInput($event, index)"
               x-on:paste="handlePaste($event)"
               x-on:keydown.backspace="$event.target.value || handleBackspace($event, index)"
@@ -50,19 +50,19 @@
         </#if>
 
         <!-- Helper text -->
-        <p class="text-center text-sm text-gray-500">
-          ${msg("loginOtpInstruction", "Please enter the 6-character code we sent via email.")}
+        <p class="text-center text-sm text-gray-500 mt-4">
+          Please enter the 6-character code we sent via email.
         </p>
 
         <!-- Buttons -->
-        <@buttonGroup.kw>
-          <@button.kw color="primary" name="submit" type="submit" id="otp-submit-btn" style="display: none">
+        <div class="flex flex-col space-y-3 mt-6">
+          <button class="bg-primary-600 text-white focus:ring-primary-600 hover:bg-primary-700 px-4 py-3 text-sm flex justify-center relative rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-offset-2" name="submit" type="submit" id="otp-submit-btn" style="display: none;">
             ${msg("doLogIn")}
-          </@button.kw>
-          <@button.kw color="secondary" name="resend" type="submit">
-            ${msg("resend", "Resend Code")}
-          </@button.kw>
-        </@buttonGroup.kw>
+          </button>
+          <button class="bg-gray-100 text-gray-700 focus:ring-gray-300 hover:bg-gray-200 px-4 py-3 text-sm flex justify-center relative rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-offset-2 border border-gray-300" name="resend" type="submit">
+            Resend Code
+          </button>
+        </div>
       </div>
     </@form.kw>
 
