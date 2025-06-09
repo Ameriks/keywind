@@ -87,18 +87,27 @@
         return password;
       }
 
-      // Set random passwords on form submission
+      // Set random passwords immediately on page load
       document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form[action="${url.registrationAction}"]');
         const passwordField = document.getElementById('password');
         const passwordConfirmField = document.getElementById('password-confirm');
 
-        if (form && passwordField && passwordConfirmField) {
-          form.addEventListener('submit', function(e) {
-            const randomPassword = generateRandomPassword();
-            passwordField.value = randomPassword;
-            passwordConfirmField.value = randomPassword;
-          });
+        if (passwordField && passwordConfirmField) {
+          const randomPassword = generateRandomPassword();
+          passwordField.value = randomPassword;
+          passwordConfirmField.value = randomPassword;
+          
+          // Also set on form submission as a backup
+          const form = document.querySelector('form');
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              if (!passwordField.value || !passwordConfirmField.value) {
+                const backupPassword = generateRandomPassword();
+                passwordField.value = backupPassword;
+                passwordConfirmField.value = backupPassword;
+              }
+            });
+          }
         }
       });
     </script>
